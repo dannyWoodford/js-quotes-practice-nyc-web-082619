@@ -36,39 +36,9 @@
       "author": "Benjamin Franklin"
     },
     {
-      "id": 8,
-      "quote": "Success is not final, failure is not fatal: it is the courage to continue that counts.",
-      "author": "Winston Churchhill"
-    },
-    {
-      "id": 9,
-      "quote": "Our greatest glory is not in never falling, but in rising everytime we fall.",
-      "author": "Confucius"
-    },
-    {
-      "id": 10,
-      "quote": "You know, failure hurts. Any kind of failure stings. If you live in the sting, you will undoubtedly fail. My way of getting past the sting is to say no, I’m just not going to let this get me down.",
-      "author": "Sonia Sotomayor"
-    },
-    {
-      "quote": "Live a life worth commenting on.",
-      "author": "Steve Martin",
-      "id": 11
-    },
-    {
-      "quote": "Live a life worth commenting on.",
-      "author": "Steve Martin",
-      "id": 12
-    },
-    {
-      "quote": "fsdfd",
-      "author": "fdsf",
-      "id": 13
-    },
-    {
-      "quote": "fdf",
-      "author": "fd",
-      "id": 14
+      "quote": "123",
+      "author": "111",
+      "id": 8
     }
   ],
   "likes": [
@@ -76,6 +46,74 @@
       "id": 1,
       "quoteId": 1,
       "createdAt": 1558524356
+    },
+    {
+      "quoteId": 1,
+      "id": 2
+    },
+    {
+      "quoteId": 2,
+      "id": 3
+    },
+    {
+      "quoteId": 2,
+      "id": 4
+    },
+    {
+      "quoteId": 2,
+      "id": 5
+    },
+    {
+      "quoteId": 2,
+      "id": 6
+    },
+    {
+      "quoteId": 4,
+      "id": 7
+    },
+    {
+      "quoteId": 4,
+      "id": 8
+    },
+    {
+      "quoteId": 1,
+      "createdAt": "2020-01-20T01:40:11.685Z",
+      "id": 9
+    },
+    {
+      "quoteId": 1,
+      "createdAt": 1579484595262,
+      "id": 10
+    },
+    {
+      "quoteId": null,
+      "createdAt": 1579486926855,
+      "id": 11
+    },
+    {
+      "quoteId": null,
+      "createdAt": 1579486927351,
+      "id": 12
+    },
+    {
+      "quoteId": null,
+      "createdAt": 1579486927552,
+      "id": 13
+    },
+    {
+      "quoteId": null,
+      "createdAt": 1579486927736,
+      "id": 14
+    },
+    {
+      "quoteId": null,
+      "createdAt": 1579486927920,
+      "id": 15
+    },
+    {
+      "quoteId": null,
+      "createdAt": 1579486928133,
+      "id": 16
     }
   ]
 }

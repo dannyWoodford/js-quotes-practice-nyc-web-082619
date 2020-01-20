@@ -10,29 +10,43 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .then(quotes => {
                 quotes.forEach((quote) => {
                     quoteList.insertAdjacentHTML("beforeend", `
-                    <li class='quote-card'>
+                    <li class='quote-card' id=${quote.id} >
                     <blockquote class="blockquote">
                       <p class="mb-0">${quote.quote}</p>
                       <footer class="blockquote-footer">${quote.author}</footer>
                       <br>
-                      <button class='btn-success'>Likes: <span>${quote.likes.length}</span></button>
-                      <button class='btn-danger'>Delete</button>
+                      <button data-like="like" class='btn-success'>Likes: <span>${quote.likes.length}</span></button>
+                      <button data-delete="delete" class='btn-danger'>Delete</button>
                     </blockquote>
                   </li>
                     `)
                 })
             })
         
-        let quoteSubmit = document.querySelector("#new-quote-form")
+    let quoteSubmit = document.querySelector("#new-quote-form")
     
     quoteSubmit.addEventListener("submit", (event) => {
         let quoteInput = document.querySelector("#new-quote")
         let quoteAuthor = document.querySelector("#author")
 
-        // event.preventDefault()
+        event.preventDefault()
         // console.log("jfkdajf")
         // console.log("quote", quoteInput.value)
         // console.log("author", quoteAuthor.value)
+
+        // const quoteList = document.querySelector("#quote-list")
+        console.log(quoteList)
+        quoteList.insertAdjacentHTML("beforeend", `
+                    <li class='quote-card' >
+                    <blockquote class="blockquote">
+                      <p class="mb-0">${quoteInput.value}</p>
+                      <footer class="blockquote-footer">${quoteAuthor.value}</footer>
+                      <br>
+                      <button data-like="like" class='btn-success'>Likes: <span>0</span></button>
+                      <button data-delete="delete" class='btn-danger'>Delete</button>
+                    </blockquote>
+                  </li>
+                    `)
 
         fetch("http://localhost:3000/quotes", {
             method: "POST",
@@ -46,122 +60,59 @@ document.addEventListener("DOMContentLoaded", (event) => {
             })
         });
 
+        quoteInput.remove()
+        quoteAuthor.remove()
+    })
+
+
+   
+
+    quoteList.addEventListener("click", (event) => {
+        // console.log(event.target.closest('.quote-card'))
+        // console.log(event.target.dataset)
+        
+        if(event.target.dataset.like === "like"){
+            // console.log(event.target.querySelector("span"))
+            // console.log(typeof(event.target.closest('.quote-card').id))
+
+            let count = event.target.closest('.quote-card').querySelector("span")
+            let newCount = parseInt(count.innerText) + 1
+            count.innerText = newCount
+
+            event.preventDefault()
+
+            let likeCreatedAt = new Date()
+            fetch('http://localhost:3000/likes', {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                  quoteId: parseInt(event.target.closest('.quote-card').id),
+                  createdAt: likeCreatedAt.getTime()
+                })
+            });
+        } else if(event.target.dataset.delete === "delete"){
+
+            event.preventDefault()
+            
+            fetch(`http://localhost:3000/quotes/${event.target.closest('.quote-card').id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            }
+            )
+            
+            let quoteCard = event.target.closest('.quote-card')
+            console.log(quoteCard)
+            quoteCard.outerHTML = ''
+
+        }
+
+      
     })
 
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const monsterDiv = document.querySelector("#monster-container")
-const controls = document.querySelector(".controls")
-let pageNumber = 1
-const createMonster = document.querySelector("#create-monster")
-
-
-fetch(`http://localhost:3000/monsters/?_limit=5&_page=${pageNumber}`)
-    .then(res => res.json())
-    .then(monsters => displayMonsters(monsters))
-
-
-// initial display monsters--------------------------------------------------------------------------------
-function displayMonsters(monsters){
-    monsters.forEach(monster => {
-        monsterDiv.insertAdjacentHTML("beforeend", 
-        `
-        <div class="card">
-            <h2>${monster.name}</h2>
-            <h4>age: ${monster.age}</h4>
-            <p>bio: ${monster.bio}</p>
-        </div>
-        `
-        )
-    });
-}
-// initial display monsters--------------------------------------------------------------------------------
-
-
-
-controls.addEventListener("click", function(event){
-    const back = document.querySelector("#back")
-    const forward = document.querySelector("#forward")
-
-    if (event.target === forward){
-        monsterDiv.innerHTML = ""
-        pageNumber += 1
-
-        fetch(`http://localhost:3000/monsters/?_limit=5&_page=${pageNumber}`)
-            .then(res => res.json())
-            .then(monsters => displayMonsters(monsters))
-
-    } else if (event.target === back && pageNumber >= 1){
-        monsterDiv.innerHTML = ""
-         
-        pageNumber -= 1 
-
-        fetch(`http://localhost:3000/monsters/?_limit=5&_page=${pageNumber}`)
-            .then(res => res.json())
-            .then(monsters => displayMonsters(monsters))
-    } 
-})
-
-
-// createMonster form -----------------------------------------------------------------------------------------
-    let form = document.createElement('form')
-    createMonster.appendChild(form)
-
-    form.insertAdjacentHTML('beforeend', 
-    `
-  
-        name: <input id="formName" type="text" name="name">
-        age: <input id="formAge" type="number" name="age">
-        description: <input id="formDescription" type="text" name="description">
-        <input type="submit" value="create monster">
-
-    `
-  )
-  form.className = "monster-form"
-/* // createMonster form ----------------------------------------------------------------------------------------- */
-
-/* // submit form ----------------------------------------------------------------------------------------- */
-let monsterForm = document.querySelector(".monster-form")
-
-monsterForm.addEventListener('submit', function (event){
-
-event.preventDefault()
-
-let formName = document.querySelector("#formName")
-let formAge = document.querySelector("#formAge")
-let formDescription = document.querySelector("#formDescription")
-    fetch(`http://localhost:3000/monsters`, {
-        method: "POST",
-        headers:
-        {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify(
-          {
-            
-            name: formName.value,
-             age: formAge.value, 
-             description: formDescription.value
-             
-          }
-        )
-})
-})
-/* // submit form ----------------------------------------------------------------------------------------- */
-
-
-
